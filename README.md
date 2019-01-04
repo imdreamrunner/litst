@@ -1,2 +1,2 @@
 # litst
-Lift us too short to name litst.
+Life is too short to name litst.
