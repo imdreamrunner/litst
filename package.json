@@ -1,0 +1,29 @@
+{
+  "name": "litst",
+  "version": "0.0.1",
+  "description": "Life is too short to name litst.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist",
+    "start": "node dist/index.js",
+    "dev-start": "npm run build && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imdreamrunner/litst.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imdreamrunner/litst/issues"
+  },
+  "homepage": "https://github.com/imdreamrunner/litst#readme",
+  "dependencies": {
+    "commander": "^2.19.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
