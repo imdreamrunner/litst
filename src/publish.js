@@ -15,19 +15,15 @@ export async function publish(sourceDir = '', options = {}) {
     const sourceFullDirectory = path.join(process.cwd(), sourceDir);
     const pages = await fs.readdir(sourceFullDirectory);
 
-    const outputFullPath = path.join(process.cwd(), outputDir);
-    await fsExtra.ensureDir(outputFullPath);
-
     const pagePromises = pages.map(async pageFileName => {
         console.log(`Process ${pageFileName}.`);
         const contentMd = await fs.readFile(path.join(process.cwd(), sourceDir, pageFileName), 'utf8');
         const generatedHtml = render(contentMd);
         if (pageFileName === 'index.md') {
-            await fs.writeFile(path.join(process.cwd(), outputDir, 'index.html'), generatedHtml);
+            await fsExtra.outputFile(path.join(process.cwd(), outputDir, 'index.html'), generatedHtml);
         } else {
             const directoryName = pageFileName.replace('.md', '');
-            await fsExtra.ensureDir(path.join(process.cwd(), outputDir, directoryName));
-            await fs.writeFile(path.join(process.cwd(), outputDir, directoryName, 'index.html'), generatedHtml);
+            await fsExtra.outputFile(path.join(process.cwd(), outputDir, directoryName, 'index.html'), generatedHtml);
         }
     });
 
