@@ -37,8 +37,7 @@ export async function serve(sourceDir = '', options = {}) {
             res.status(404).send(errorPage(`File ${fullPath} is not found.`))
         }
         const sourceMd = await fs.readFile(fullPath, 'utf8');
-        const pageResource = render(sourceMd);
-        res.send(page(pageResource))
+        res.send(await render(sourceMd))
     };
 
     app.get('/exit', (req, res) => {
