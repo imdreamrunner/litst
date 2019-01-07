@@ -3,7 +3,6 @@
  */
 
 import showdown from 'showdown';
-import fs from "mz/fs";
 import {page} from "./html";
 
 const converter = new showdown.Converter();
@@ -13,7 +12,7 @@ const converter = new showdown.Converter();
  * @param {string} md the page content markdown.
  * @returns {object} rendered page object.
  */
-export async function render(md) {
+export function render(md) {
     const html = converter.makeHtml(md);
     return page({
         body: html

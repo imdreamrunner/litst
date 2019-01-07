@@ -32,12 +32,11 @@ export async function serve(sourceDir = '', options = {}) {
 
     const servePage = async (pageId, res) => {
         const fullPath = path.join(process.cwd(), sourceDir, pageId.toLowerCase() + '.md');
-        console.log(fullPath);
         if (! await fs.exists(fullPath)) {
             res.status(404).send(errorPage(`File ${fullPath} is not found.`))
         }
         const sourceMd = await fs.readFile(fullPath, 'utf8');
-        res.send(await render(sourceMd))
+        res.send(render(sourceMd))
     };
 
     app.get('/exit', (req, res) => {
