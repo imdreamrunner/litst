@@ -2,6 +2,7 @@
  * Publish all the pages to a destination folder.
  */
 import fs from 'mz/fs';
+import fsExtra from 'fs-extra';
 import path from "path";
 import {render} from "./render";
 
@@ -15,16 +16,19 @@ export async function publish(sourceDir = '', options = {}) {
     const pages = await fs.readdir(sourceFullDirectory);
 
     const outputFullPath = path.join(process.cwd(), outputDir);
-    if (! await fs.exists(outputFullPath)) {
-        console.log(`Output directory "${outputFullPath}" does not exist. Create it.`)
-        await fs.mkdir(outputFullPath);
-    }
+    await fsExtra.ensureDir(outputFullPath);
 
     const pagePromises = pages.map(async pageFileName => {
+        console.log(`Process ${pageFileName}.`);
         const contentMd = await fs.readFile(path.join(process.cwd(), sourceDir, pageFileName), 'utf8');
         const generatedHtml = render(contentMd);
-        const generatedFileName = pageFileName.replace('.md', '.html');
-        await fs.writeFile(path.join(process.cwd(), outputDir, generatedFileName), generatedHtml);
+        if (pageFileName === 'index.md') {
+            await fs.writeFile(path.join(process.cwd(), outputDir, 'index.html'), generatedHtml);
+        } else {
+            const directoryName = pageFileName.replace('.md', '');
+            await fsExtra.ensureDir(path.join(process.cwd(), outputDir, directoryName));
+            await fs.writeFile(path.join(process.cwd(), outputDir, directoryName, 'index.html'), generatedHtml);
+        }
     });
 
     await Promise.all(pagePromises);
